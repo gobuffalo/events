@@ -23,7 +23,13 @@ To listen for events you need to register an [`events#Listener`](https://godoc.o
 
 ```go
 func init() {
-  events.Listen("my-listener", func(e events.Event) {
+  // if you want to give your listener a nice name to identify itself
+  events.NamedListen("my-listener", func(e events.Event) {
+    fmt.Println("### e ->", e)
+  })
+
+  // if you don't care about identifying your listener
+  events.Listen(func(e events.Event) {
     fmt.Println("### e ->", e)
   })
 }
