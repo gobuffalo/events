@@ -41,6 +41,19 @@ func Emit(e Event) error {
 	return boss.Emit(e)
 }
 
+func EmitPayload(kind string, payload interface{}) error {
+	return EmitError(kind, nil, payload)
+}
+
+func EmitError(kind string, err error, payload interface{}) error {
+	e := Event{
+		Kind:    kind,
+		Payload: payload,
+		Error:   err,
+	}
+	return Emit(e)
+}
+
 // NamedListen for events. Name is the name of the
 // listener NOT the events you want to listen for,
 // so something like "my-listener", "kafka-listener", etc...
