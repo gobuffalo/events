@@ -15,10 +15,15 @@ type Manager interface {
 	StopListening(string)
 }
 
-var boss Manager = &manager{
-	moot:      &sync.RWMutex{},
-	listeners: map[string]Listener{},
+// DefaultManager implements a map backed Manager
+func DefaultManager() Manager {
+	return &manager{
+		moot:      &sync.RWMutex{},
+		listeners: map[string]Listener{},
+	}
 }
+
+var boss Manager = DefaultManager()
 
 type manager struct {
 	moot      *sync.RWMutex
