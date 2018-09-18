@@ -8,6 +8,7 @@ require (
 	github.com/alexflint/go-scalar v0.0.0-20170216020425-e80c3b7ed292 // indirect
 	github.com/alexkohler/nakedret v0.0.0-20171106223215-c0e305a4f690 // indirect
 	github.com/client9/misspell v0.3.4 // indirect
+	github.com/gobuffalo/buffalo v0.12.6
 	github.com/gobuffalo/buffalo-plugins v0.0.0-20180911185405-ca94b2cb30ad
 	github.com/golang/lint v0.0.0-20180702182130-06c8688daad7 // indirect
 	github.com/gordonklaus/ineffassign v0.0.0-20180909121442-1003c8bd00dc // indirect

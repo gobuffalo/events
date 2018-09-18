@@ -1,13 +1,9 @@
 package events
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
-	"os/exec"
-	"strings"
+	"runtime"
 
-	"github.com/gobuffalo/buffalo-plugins/plugins"
 	"github.com/pkg/errors"
 )
 
@@ -45,54 +41,27 @@ func Emit(e Event) error {
 	return boss.Emit(e)
 }
 
-// Listen for events. Name is the name of the
-// listener NOT the events you want to listen for
-func Listen(name string, l Listener) {
-	boss.Listen(name, l)
+// NamedListen for events. Name is the name of the
+// listener NOT the events you want to listen for,
+// so something like "my-listener", "kafka-listener", etc...
+func NamedListen(name string, l Listener) (DeleteFn, error) {
+	return boss.Listen(name, l)
 }
 
-// StopListening removes the listener with the given name
-func StopListening(name string) {
-	boss.StopListening(name)
+// Listen for events.
+func Listen(l Listener) (DeleteFn, error) {
+	_, file, line, _ := runtime.Caller(1)
+	return NamedListen(fmt.Sprintf("%s:%d", file, line), l)
 }
 
-// SetManager allows you to replace the default
-// event manager with a custom one
-func SetManager(m Manager) {
-	boss = m
+type listable interface {
+	List() ([]string, error)
 }
 
-// LoadPlugins will add listeners for any plugins that support "events"
-func LoadPlugins() error {
-	plugs, err := plugins.Available()
-	if err != nil {
-		return errors.WithStack(err)
+// List all listeners
+func List() ([]string, error) {
+	if l, ok := boss.(listable); ok {
+		return l.List()
 	}
-	for _, cmds := range plugs {
-		for _, c := range cmds {
-			if c.BuffaloCommand != "events" {
-				continue
-			}
-			Listen(fmt.Sprintf("plugin-%s-%s", c.Binary, c.Name), func(e Event) {
-				b, err := json.Marshal(e)
-				if err != nil {
-					fmt.Println("error trying to marshal event", e, err)
-					return
-				}
-				cmd := exec.Command(c.Binary, c.UseCommand, string(b))
-				cmd.Stderr = os.Stderr
-				cmd.Stdout = os.Stdout
-				cmd.Stdin = os.Stdin
-				if err := cmd.Run(); err != nil {
-					fmt.Println("error trying to send event", strings.Join(cmd.Args, " "), err)
-				}
-			})
-		}
-
-	}
-	return nil
-}
-
-func init() {
-	LoadPlugins()
+	return []string{}, errors.Errorf("manager %T does not implemented listable", boss)
 }

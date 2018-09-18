@@ -48,6 +48,23 @@ func Test_Event_MarshalJSON(t *testing.T) {
 				"kind": "K",
 			},
 		},
+		{
+			in: Event{
+				Kind: "K",
+				Payload: map[string]interface{}{
+					"f":   func() {},
+					"a":   "A",
+					"two": 2,
+				},
+			},
+			out: map[string]interface{}{
+				"kind": "K",
+				"payload": map[string]interface{}{
+					"a":   "A",
+					"two": 2,
+				},
+			},
+		},
 	}
 
 	for i, tt := range table {

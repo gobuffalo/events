@@ -1,18 +1,20 @@
 package events
 
 import (
+	"sort"
 	"strings"
 	"sync"
 
 	"github.com/pkg/errors"
 )
 
+type DeleteFn func()
+
 // Manager can be implemented to replace the default
 // events manager
 type Manager interface {
-	Listen(string, Listener)
+	Listen(string, Listener) (DeleteFn, error)
 	Emit(Event) error
-	StopListening(string)
 }
 
 // DefaultManager implements a map backed Manager
@@ -23,23 +25,39 @@ func DefaultManager() Manager {
 	}
 }
 
+// SetManager allows you to replace the default
+// event manager with a custom one
+func SetManager(m Manager) {
+	boss = m
+}
+
 var boss Manager = DefaultManager()
+var _ listable = &manager{}
 
 type manager struct {
 	moot      *sync.RWMutex
 	listeners map[string]Listener
 }
 
-func (m *manager) Reset() {
-	m.moot.Lock()
-	m.listeners = map[string]Listener{}
-	m.moot.Unlock()
-}
+func (m *manager) Listen(name string, l Listener) (DeleteFn, error) {
+	m.moot.RLock()
+	_, ok := m.listeners[name]
+	m.moot.RUnlock()
+	if ok {
+		return nil, errors.Errorf("listener named %s is already listening", name)
+	}
 
-func (m *manager) Listen(name string, l Listener) {
 	m.moot.Lock()
 	m.listeners[name] = l
 	m.moot.Unlock()
+
+	df := func() {
+		m.moot.Lock()
+		delete(m.listeners, name)
+		m.moot.Unlock()
+	}
+
+	return df, nil
 }
 
 func (m *manager) Emit(e Event) error {
@@ -55,8 +73,13 @@ func (m *manager) Emit(e Event) error {
 	return nil
 }
 
-func (m *manager) StopListening(name string) {
-	m.moot.Lock()
-	delete(m.listeners, name)
-	m.moot.Unlock()
+func (m *manager) List() ([]string, error) {
+	var names []string
+	m.moot.RLock()
+	for k := range m.listeners {
+		names = append(names, k)
+	}
+	m.moot.RUnlock()
+	sort.Strings(names)
+	return names, nil
 }
