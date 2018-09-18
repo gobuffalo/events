@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/gobuffalo/buffalo/plugins"
+	"github.com/gobuffalo/buffalo-plugins/plugins"
 	"github.com/pkg/errors"
 )
 
