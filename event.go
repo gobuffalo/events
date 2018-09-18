@@ -10,13 +10,13 @@ import (
 // in the lifecycle of a Buffalo app
 type Event struct {
 	// Kind is the "type" of event "app:start"
-	Kind string
+	Kind string `json:"kind"`
 	// Message is optional
-	Message string
+	Message string `json:"message"`
 	// Payload is optional
-	Payload interface{}
+	Payload interface{} `json:"payload"`
 	// Error is optional
-	Error error
+	Error error `json:"error"`
 }
 
 // MarshalJSON implements the json marshaler for an event
