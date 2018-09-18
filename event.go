@@ -16,14 +16,16 @@ type Event struct {
 	// Payload is optional
 	Payload interface{} `json:"payload"`
 	// Error is optional
-	Error error `json:"error"`
+	Error error `json:"-"`
 }
 
 // MarshalJSON implements the json marshaler for an event
 func (e Event) MarshalJSON() ([]byte, error) {
 	m := map[string]interface{}{
-		"kind":    e.Kind,
-		"message": e.Message,
+		"kind": e.Kind,
+	}
+	if len(e.Message) != 0 {
+		m["message"] = e.Message
 	}
 	if e.Error != nil {
 		m["error"] = e.Error.Error()
