@@ -9,12 +9,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var m, _ = boss.(*manager)
-
 func Test_manager_Listen(t *testing.T) {
 	r := require.New(t)
 
-	m.Reset()
+	m := DefaultManager().(*manager)
 
 	r.Len(m.listeners, 0)
 
@@ -29,7 +27,7 @@ func Test_manager_Listen(t *testing.T) {
 func Test_manager_Emit(t *testing.T) {
 	r := require.New(t)
 
-	m.Reset()
+	m := DefaultManager().(*manager)
 
 	max := 5
 	wg := &sync.WaitGroup{}
