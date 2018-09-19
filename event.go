@@ -3,7 +3,6 @@ package events
 import (
 	"encoding/json"
 	"errors"
-	"reflect"
 )
 
 // Event represents different events
@@ -14,7 +13,7 @@ type Event struct {
 	// Message is optional
 	Message string `json:"message"`
 	// Payload is optional
-	Payload interface{} `json:"payload"`
+	Payload Payload `json:"payload"`
 	// Error is optional
 	Error error `json:"-"`
 }
@@ -36,24 +35,8 @@ func (e Event) MarshalJSON() ([]byte, error) {
 	if e.Error != nil {
 		m["error"] = e.Error.Error()
 	}
-
-	rv := reflect.Indirect(reflect.ValueOf(e.Payload))
-	switch rv.Kind() {
-	case reflect.Map:
-		pm := map[string]interface{}{}
-		for _, k := range rv.MapKeys() {
-			v := rv.MapIndex(k)
-			if _, err := json.Marshal(v.Interface()); err == nil {
-				// it can be marshaled, so add it:
-				pm[k.String()] = v.Interface()
-			}
-		}
-		m["payload"] = pm
-	default:
-		if _, err := json.Marshal(e.Payload); err == nil {
-			// it can be marshaled, so add it:
-			m["payload"] = e.Payload
-		}
+	if len(e.Payload) != 0 {
+		m["payload"] = e.Payload
 	}
 
 	return json.Marshal(m)

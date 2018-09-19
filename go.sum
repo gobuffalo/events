@@ -17,6 +17,8 @@ github.com/gobuffalo/genny v0.0.0-20180911182620-ca7c22ecfecc/go.mod h1:HbQtrpn9
 github.com/gobuffalo/genny v0.0.0-20180911185118-5ca23a895a78/go.mod h1:e694VPwR0+kdvN8aSzC0T7+D6LwOs526YdZvAnw35Og=
 github.com/gobuffalo/github_flavored_markdown v1.0.0/go.mod h1:c8/8gRnd6MSyyk+fp6E8O8cUTHd7P2cnDnH4G7o91l0=
 github.com/gobuffalo/licenser v0.0.0-20180911183003-6611b155b234/go.mod h1:dKS3aMBLM+AbeP4NdNL80CDl62D5aP/HmZ0Vwk72PLE=
+github.com/gobuffalo/mapi v0.0.0-20180919210455-5485bb0900f5 h1:GlA2Lyd/FF2+N0ktuIs1SlV3FHY7Thl4m/ELsM8smGg=
+github.com/gobuffalo/mapi v0.0.0-20180919210455-5485bb0900f5/go.mod h1:4VAGh89y6rVOvm5A8fKFxYG+wIW6LO1FMTG9hnKStFc=
 github.com/gobuffalo/packr v1.13.3/go.mod h1:qdqw8AgJyKw60qj56fnEBiS9fIqqCaP/vWJQvR4Jcss=
 github.com/gobuffalo/packr v1.13.4/go.mod h1:mDIuCJAdKuJD/M4Ub4ulEXde03DEPZc1HZfL2MxAn44=
 github.com/gobuffalo/packr v1.13.5 h1:ZrvW2PfrxNlkHTuoRBW8kqnOMt0rt+Xz9pmazIxUf64=

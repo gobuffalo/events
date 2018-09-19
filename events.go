@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"runtime"
 
+	"github.com/gobuffalo/mapi"
 	"github.com/pkg/errors"
 )
+
+type Payload = mapi.Mapi
 
 const (
 	// AppStart is emitted when buffalo.App#Serve is called
@@ -41,11 +44,11 @@ func Emit(e Event) error {
 	return boss.Emit(e)
 }
 
-func EmitPayload(kind string, payload interface{}) error {
+func EmitPayload(kind string, payload Payload) error {
 	return EmitError(kind, nil, payload)
 }
 
-func EmitError(kind string, err error, payload interface{}) error {
+func EmitError(kind string, err error, payload Payload) error {
 	e := Event{
 		Kind:    kind,
 		Payload: payload,
