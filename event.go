@@ -19,6 +19,12 @@ type Event struct {
 	Error error `json:"-"`
 }
 
+func (e Event) String() string {
+	b, _ := e.MarshalJSON()
+
+	return string(b)
+}
+
 // MarshalJSON implements the json marshaler for an event
 func (e Event) MarshalJSON() ([]byte, error) {
 	m := map[string]interface{}{
