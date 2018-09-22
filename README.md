@@ -46,6 +46,23 @@ events.Emit(events.Event{
 })
 ```
 
+There is only one required field when emitting an event, `Kind`.
+
+The `Kind` field is key to how people will interpret your messages, and should be constructed as such: `<namespace>:<event-kind>:<err-optional>`.
+
+In the examples below from [Buffalo](https://gobuffalo.io) you can see it is using the `buffalo:` name space for its events.
+
+```go
+// EvtAppStart is emitted when buffalo.App#Serve is called
+EvtAppStart = "buffalo:app:start"
+// EvtAppStartErr is emitted when an error occurs calling buffalo.App#Serve
+EvtAppStartErr = "buffalo:app:start:err"
+// EvtAppStop is emitted when buffalo.App#Stop is called
+EvtAppStop = "buffalo:app:stop"
+// EvtAppStopErr is emitted when an error occurs calling buffalo.App#Stop
+EvtAppStopErr = "buffalo:app:stop:err"
+```
+
 ## Implementing a Manager
 
 By default `events` implements a basic manager for you. Should you want to replace that with your own implementation, perhaps that's backed by a proper message queue, you can implement the [`events#Manager`](https://godoc.org/github.com/gobuffalo/events#Manager) interface.

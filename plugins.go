@@ -22,26 +22,32 @@ func LoadPlugins() error {
 			if c.BuffaloCommand != "events" {
 				continue
 			}
-			NamedListen(fmt.Sprintf("[PLUGIN] %s %s", c.Binary, c.Name), func(e Event) {
-				b, err := json.Marshal(e)
+			err := func(c plugins.Command) error {
+				n := fmt.Sprintf("[PLUGIN] %s %s", c.Binary, c.Name)
+				_, err := NamedListen(n, func(e Event) {
+					b, err := json.Marshal(e)
+					if err != nil {
+						fmt.Println("error trying to marshal event", e, err)
+						return
+					}
+					cmd := exec.Command(c.Binary, c.UseCommand, string(b))
+					cmd.Stderr = os.Stderr
+					cmd.Stdout = os.Stdout
+					cmd.Stdin = os.Stdin
+					if err := cmd.Run(); err != nil {
+						fmt.Println("error trying to send event", strings.Join(cmd.Args, " "), err)
+					}
+				})
 				if err != nil {
-					fmt.Println("error trying to marshal event", e, err)
-					return
+					return errors.WithStack(err)
 				}
-				cmd := exec.Command(c.Binary, c.UseCommand, string(b))
-				cmd.Stderr = os.Stderr
-				cmd.Stdout = os.Stdout
-				cmd.Stdin = os.Stdin
-				if err := cmd.Run(); err != nil {
-					fmt.Println("error trying to send event", strings.Join(cmd.Args, " "), err)
-				}
-			})
+				return nil
+			}(c)
+			if err != nil {
+				return errors.WithStack(err)
+			}
 		}
 
 	}
 	return nil
-}
-
-func init() {
-	LoadPlugins()
 }
