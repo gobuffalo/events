@@ -45,7 +45,6 @@ github.com/magiconair/properties v1.8.0/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czP
 github.com/markbates/deplist v1.0.3/go.mod h1:CNJf81LPh/KJNv/URRusYYPFJDrsKUniUzUK/F4b7G4=
 github.com/markbates/going v1.0.2/go.mod h1:UWCk3zm0UKefHZ7l8BNqi26UyiEMniznk8naLdTcy6c=
 github.com/markbates/inflect v1.0.0/go.mod h1:oTeZL2KHA7CUX6X+fovmK9OvIOFuqu0TwdQrZjLTh88=
-github.com/markbates/oncer v0.0.0-20180924031910-e862a676800b h1:cZ9nQNL10X+yZx2xFcvmRWnwLr1a5mtr+FNQBGzuFhU=
 github.com/markbates/oncer v0.0.0-20180924031910-e862a676800b/go.mod h1:Ld9puTsIW75CHf65OeIOkyKbteujpZVXDpWK6YGZbxE=
 github.com/markbates/oncer v0.0.0-20180924034138-723ad0170a46 h1:hE7AFWf+YsdjT67d8uMxhirH3FG5Up2ovbwFWjamdt4=
 github.com/markbates/oncer v0.0.0-20180924034138-723ad0170a46/go.mod h1:Ld9puTsIW75CHf65OeIOkyKbteujpZVXDpWK6YGZbxE=
