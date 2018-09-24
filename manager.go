@@ -64,12 +64,23 @@ func (m *manager) Emit(e Event) error {
 	if err := e.Validate(); err != nil {
 		return errors.WithStack(err)
 	}
-	m.moot.RLock()
-	defer m.moot.RUnlock()
-	e.Kind = strings.ToLower(e.Kind)
-	for _, l := range m.listeners {
-		go l(e)
-	}
+	go func(e Event) {
+		m.moot.RLock()
+		defer m.moot.RUnlock()
+		e.Kind = strings.ToLower(e.Kind)
+		for _, l := range m.listeners {
+			ex := Event{
+				Kind:    e.Kind,
+				Error:   e.Error,
+				Message: e.Message,
+				Payload: Payload{},
+			}
+			for k, v := range e.Payload {
+				ex.Payload[k] = v
+			}
+			go l(ex)
+		}
+	}(e)
 	return nil
 }
 
