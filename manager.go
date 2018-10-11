@@ -64,10 +64,13 @@ func (m *manager) Emit(e Event) error {
 	if err := e.Validate(); err != nil {
 		return errors.WithStack(err)
 	}
+	e.Kind = strings.ToLower(e.Kind)
+	if e.IsError() && e.Error == nil {
+		e.Error = errors.New(e.Kind)
+	}
 	go func(e Event) {
 		m.moot.RLock()
 		defer m.moot.RUnlock()
-		e.Kind = strings.ToLower(e.Kind)
 		for _, l := range m.listeners {
 			ex := Event{
 				Kind:    e.Kind,
