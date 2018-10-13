@@ -25,7 +25,7 @@ func EmitPayload(kind string, payload interface{}) error {
 }
 
 func EmitError(kind string, err error, payload interface{}) error {
-	if !strings.HasSuffix(kind, ":err") {
+	if err != nil && !strings.HasSuffix(kind, ":err") {
 		kind += ":err"
 	}
 	var pl Payload
