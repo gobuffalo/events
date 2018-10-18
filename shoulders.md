@@ -7,6 +7,10 @@ Thank you to the following **GIANTS**:
 
 * [github.com/gobuffalo/buffalo-plugins/plugins](https://godoc.org/github.com/gobuffalo/buffalo-plugins/plugins)
 
+* [github.com/gobuffalo/buffalo-plugins/plugins/plugdeps](https://godoc.org/github.com/gobuffalo/buffalo-plugins/plugins/plugdeps)
+
+* [github.com/gobuffalo/buffalo/meta](https://godoc.org/github.com/gobuffalo/buffalo/meta)
+
 * [github.com/gobuffalo/envy](https://godoc.org/github.com/gobuffalo/envy)
 
 * [github.com/gobuffalo/events](https://godoc.org/github.com/gobuffalo/events)
@@ -15,11 +19,21 @@ Thank you to the following **GIANTS**:
 
 * [github.com/joho/godotenv](https://godoc.org/github.com/joho/godotenv)
 
+* [github.com/karrick/godirwalk](https://godoc.org/github.com/karrick/godirwalk)
+
+* [github.com/markbates/inflect](https://godoc.org/github.com/markbates/inflect)
+
 * [github.com/markbates/oncer](https://godoc.org/github.com/markbates/oncer)
+
+* [github.com/pelletier/go-toml](https://godoc.org/github.com/pelletier/go-toml)
 
 * [github.com/pkg/errors](https://godoc.org/github.com/pkg/errors)
 
 * [github.com/sirupsen/logrus](https://godoc.org/github.com/sirupsen/logrus)
+
+* [github.com/spf13/cobra](https://godoc.org/github.com/spf13/cobra)
+
+* [github.com/spf13/pflag](https://godoc.org/github.com/spf13/pflag)
 
 * [golang.org/x/crypto/ssh/terminal](https://godoc.org/golang.org/x/crypto/ssh/terminal)
 
