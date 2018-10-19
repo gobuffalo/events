@@ -1,6 +1,10 @@
 package events
 
-import "regexp"
+import (
+	"regexp"
+
+	"github.com/markbates/safe"
+)
 
 // Filter compiles the string as a regex and returns
 // the original listener wrapped in a new listener
@@ -9,7 +13,9 @@ func Filter(s string, fn Listener) Listener {
 	rx := regexp.MustCompile(s)
 	return func(e Event) {
 		if rx.MatchString(e.Kind) {
-			fn(e)
+			safe.Run(func() {
+				fn(e)
+			})
 		}
 	}
 }

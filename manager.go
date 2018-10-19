@@ -1,11 +1,11 @@
 package events
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 	"sync"
 
+	"github.com/markbates/safe"
 	"github.com/pkg/errors"
 )
 
@@ -72,7 +72,7 @@ func (m *manager) Emit(e Event) error {
 	go func(e Event) {
 		m.moot.RLock()
 		defer m.moot.RUnlock()
-		for k, l := range m.listeners {
+		for _, l := range m.listeners {
 			ex := Event{
 				Kind:    e.Kind,
 				Error:   e.Error,
@@ -82,14 +82,11 @@ func (m *manager) Emit(e Event) error {
 			for k, v := range e.Payload {
 				ex.Payload[k] = v
 			}
-			go func(e Event, k string, l Listener) {
-				defer func() {
-					if err := recover(); err != nil {
-						fmt.Println("error trying to send event", k, err)
-					}
-				}()
-				l(e)
-			}(ex, k, l)
+			go func(e Event, l Listener) {
+				safe.Run(func() {
+					l(e)
+				})
+			}(ex, l)
 		}
 	}(e)
 	return nil
