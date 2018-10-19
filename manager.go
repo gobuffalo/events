@@ -1,6 +1,7 @@
 package events
 
 import (
+	"fmt"
 	"sort"
 	"strings"
 	"sync"
@@ -71,7 +72,7 @@ func (m *manager) Emit(e Event) error {
 	go func(e Event) {
 		m.moot.RLock()
 		defer m.moot.RUnlock()
-		for _, l := range m.listeners {
+		for k, l := range m.listeners {
 			ex := Event{
 				Kind:    e.Kind,
 				Error:   e.Error,
@@ -81,7 +82,14 @@ func (m *manager) Emit(e Event) error {
 			for k, v := range e.Payload {
 				ex.Payload[k] = v
 			}
-			go l(ex)
+			go func(e Event, k string, l Listener) {
+				defer func() {
+					if err := recover(); err != nil {
+						fmt.Println("error trying to send event", k, err)
+					}
+				}()
+				l(e)
+			}(ex, k, l)
 		}
 	}(e)
 	return nil
