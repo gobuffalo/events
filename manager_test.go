@@ -14,18 +14,21 @@ func Test_manager_Listen(t *testing.T) {
 
 	m := DefaultManager().(*manager)
 
-	r.Len(m.listeners, 0)
-
 	df, err := m.Listen("foo", func(e Event) {})
 	r.NoError(err)
-	r.Len(m.listeners, 1)
-	r.NotNil(m.listeners["foo"])
+
+	l, ok := m.listeners.Load("foo")
+	r.True(ok)
+	r.NotNil(l)
 
 	_, err = m.Listen("foo", func(Event) {})
 	r.Error(err)
 
 	df()
-	r.Len(m.listeners, 0)
+
+	l, ok = m.listeners.Load("foo")
+	r.False(ok)
+	r.Nil(l)
 }
 
 func Test_manager_Emit(t *testing.T) {
