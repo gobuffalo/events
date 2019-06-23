@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/gobuffalo/mapi"
-	"github.com/pkg/errors"
+	"github.com/gobuffalo/events/internal/mapi"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,7 +32,7 @@ func Test_Event_MarshalJSON(t *testing.T) {
 				Payload: mapi.Mapi{
 					"p": "P",
 				},
-				Error: errors.New("E"),
+				Error: fmt.Errorf("E"),
 			},
 			out: map[string]interface{}{
 				"kind":    "K",
