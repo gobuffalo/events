@@ -2,11 +2,11 @@ package events
 
 import (
 	"context"
+	"fmt"
 	"sync"
 	"testing"
 	"time"
 
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
 )
 
@@ -91,7 +91,7 @@ func Test_EmitError(t *testing.T) {
 	})
 
 	for i := 0; i < max; i++ {
-		err := EmitError("foo", errors.New("bar"), i)
+		err := EmitError("foo", fmt.Errorf("bar"), i)
 		r.NoError(err)
 	}
 
